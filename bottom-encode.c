@@ -2,7 +2,6 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 
 
 int main(void) {
@@ -27,6 +26,8 @@ int main(void) {
         lengths[i] = l;
     }
 
+    setvbuf(stdout, NULL, _IONBF, 0);
+
     char buffer[8192];
     unsigned int l = 0;
 
@@ -34,12 +35,12 @@ int main(void) {
     int c;
     while ((c = getchar()) != EOF) {
         if (l + lengths[c] > sizeof buffer) {
-            write(1, buffer, l);
+            fwrite(buffer, l, 1, stdout);
             l = 0;
         }
         memcpy(&buffer[l], cache[c], lengths[c]);
         l += lengths[c];
     }
-    write(1, buffer, l);
+    fwrite(buffer, l, 1, stdout);
     return 0;
 }
