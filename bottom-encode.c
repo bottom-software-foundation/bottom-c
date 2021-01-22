@@ -7,12 +7,12 @@
 
 int main(void) {
     // build cache
-    char *cache[256];
+    char cache[256][40];
     int lengths[256];
-    cache[0] = "❤️";
+    memcpy(cache[0], "❤️", 6);
     lengths[0] = 6;
     for (int i = 1; i < 256; i++) {
-        char b[40];
+        char *b = cache[i];
         int l = 0;
         int r = i;
         while (r) {
@@ -24,7 +24,6 @@ int main(void) {
         }
         memcpy(b+l, "👉👈", 8);
         l += 8;
-        cache[i] = b;
         lengths[i] = l;
     }
 
