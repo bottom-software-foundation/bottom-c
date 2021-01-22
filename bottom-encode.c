@@ -12,7 +12,7 @@ int main(void) {
     cache[0] = "❤️";
     lengths[0] = 6;
     for (int i = 1; i < 256; i++) {
-        char *b = malloc(40);
+        char b[40];
         int l = 0;
         int r = i;
         while (r) {
@@ -24,7 +24,6 @@ int main(void) {
         }
         memcpy(b+l, "👉👈", 8);
         l += 8;
-        b = realloc(b, l);
         cache[i] = b;
         lengths[i] = l;
     }
