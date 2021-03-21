@@ -8,8 +8,8 @@ int main(void) {
     // build cache
     char cache[256][40];
     int lengths[256];
-    memcpy(cache[0], "❤️", 6);
-    lengths[0] = 6;
+    memcpy(cache[0], "❤️👉👈", 14);
+    lengths[0] = 14;
     for (int i = 1; i < 256; i++) {
         char *b = cache[i];
         int l = 0;
