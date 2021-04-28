@@ -1,6 +1,13 @@
 SHELL = /bin/sh
 
-CFLAGS = -Wall -Wextra --std=c99 -Ofast -fPIC
+REQ_CFLAGS = --std=c99 -fPIC
+WARN_CFLAGS = -Wall -Wextra
+CFLAGS ?= -O2 -flto -pipe
+ACTUAL_CFLAGS = $(REQ_CFLAGS) $(WARN_CFLAGS) $(CFLAGS)
+
+DESTDIR ?= /
+PREFIX ?= /usr/local
+BINDIR ?= $(PREFIX)/bin
 
 CC ?= gcc
 STRIP ?= strip
@@ -11,19 +18,19 @@ RM ?= rm
 default: bottom-encode bottom-decode
 
 bottom-encode:
-	$(CC) $(CFLAGS) bottom-encode.c -o bottom-encode
+	$(CC) $(ACTUAL_CFLAGS) bottom-encode.c -o bottom-encode
 	$(STRIP) ./bottom-encode
 
 bottom-decode:
-	$(CC) $(CFLAGS) bottom-decode.c -o bottom-decode
+	$(CC) $(ACTUAL_CFLAGS) bottom-decode.c -o bottom-decode
 	$(STRIP) ./bottom-decode
 
 
 install: default
-	$(CP) bottom-encode bottom-decode /usr/bin
+	$(CP) bottom-encode bottom-decode $(DESTDIR)$(BINDIR)
 
 uninstall:
-	$(RM) /usr/bin/bottom-encode /usr/bin/bottom-decode
+	$(RM) $(DESTDIR)$(BINDIR)/bottom-encode $(DESTDIR)$(BINDIR)/bottom-decode
 
 clean:
 	$(RM) bottom-encode bottom-decode
