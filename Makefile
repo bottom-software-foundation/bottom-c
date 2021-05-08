@@ -1,8 +1,8 @@
 SHELL = /bin/sh
 
-REQ_CFLAGS = --std=c99 -fPIC
+REQ_CFLAGS = --std=c99 -fPIC -s
 WARN_CFLAGS = -Wall -Wextra
-CFLAGS ?= -O2 -flto -pipe
+CFLAGS ?= -Ofast -flto -pipe
 ACTUAL_CFLAGS = $(REQ_CFLAGS) $(WARN_CFLAGS) $(CFLAGS)
 
 DESTDIR ?= /
@@ -19,11 +19,9 @@ default: bottom-encode bottom-decode
 
 bottom-encode:
 	$(CC) $(ACTUAL_CFLAGS) bottom-encode.c -o bottom-encode
-	$(STRIP) ./bottom-encode
 
 bottom-decode:
 	$(CC) $(ACTUAL_CFLAGS) bottom-decode.c -o bottom-decode
-	$(STRIP) ./bottom-decode
 
 
 install: default
