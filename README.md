@@ -1,18 +1,17 @@
-# [bottom](https://github.com/kaylynn234/bottom) (again)
+# bottom-c
+[``bottom``](https://github.com/bottom-software-foundation/bottom-rs), but it's written in C.
 
-## linux:
+## Building
+You'll need ``make``; building can be done by running the following
 
-build:
+    make
 
-```bash
-make
-```
+You can also install ``bottom-c`` on your system
 
-install:
+    sudo make install
 
-```bash
-sudo make install
- ```
+``bottom-c`` use ``gcc``, but you can also build with the compiler of your choice. To remove ``bottom-c`` from your system, do the following
 
+    sudo make uninstall
 
-or build however you want with compiler of your choice
+Check out the [Makefile](./Makefile) to see what options you need to specify in order to install in a different path and how to set the compiler of your choice.
