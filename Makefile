@@ -1,21 +1,18 @@
-SHELL = /bin/sh
+CC  ?= gcc
+CP  ?= cp
+RM  ?= rm
 
-REQ_CFLAGS = --std=c99 -fPIC -s
-WARN_CFLAGS = -Wall -Wextra
-CFLAGS ?= -Ofast -flto -pipe
+PREFIX  ?= /usr/local
+BINDIR  ?= $(PREFIX)/bin
+CFLAGS  ?= -Ofast -flto -pipe
+
+REQ_CFLAGS    = --std=c99 -fPIC -s
+WARN_CFLAGS   = -Wall -Wextra
 ACTUAL_CFLAGS = $(REQ_CFLAGS) $(WARN_CFLAGS) $(CFLAGS)
 
-DESTDIR ?= /
-PREFIX ?= /usr/local
-BINDIR ?= $(PREFIX)/bin
+SRC := bottom-encode bottom-decode
 
-CC ?= gcc
-STRIP ?= strip
-CP ?= cp
-RM ?= rm
-
-
-default: bottom-encode bottom-decode
+all: $(SRC)
 
 bottom-encode:
 	$(CC) $(ACTUAL_CFLAGS) bottom-encode.c -o bottom-encode
@@ -23,12 +20,14 @@ bottom-encode:
 bottom-decode:
 	$(CC) $(ACTUAL_CFLAGS) bottom-decode.c -o bottom-decode
 
-
-install: default
-	$(CP) bottom-encode bottom-decode $(DESTDIR)$(BINDIR)
+install: all
+	mkdir -p $(DESTDIR)$(BINDIR)
+	$(CP) $(SRC) $(DESTDIR)$(BINDIR)
 
 uninstall:
-	$(RM) $(DESTDIR)$(BINDIR)/bottom-encode $(DESTDIR)$(BINDIR)/bottom-decode
+	$(RM) $(addprefix $(DESTDIR)$(BINDIR)/, $(SRC))
 
 clean:
-	$(RM) bottom-encode bottom-decode
+	$(RM) $(SRC)
+
+.PHONY: all clean install
