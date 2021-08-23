@@ -1,6 +1,5 @@
-CC  ?= gcc
-CP  ?= cp
-RM  ?= rm
+CC      ?= gcc
+INSTALL ?= install
 
 PREFIX  ?= /usr/local
 BINDIR  ?= $(PREFIX)/bin
@@ -12,22 +11,19 @@ ACTUAL_CFLAGS = $(REQ_CFLAGS) $(WARN_CFLAGS) $(CFLAGS)
 
 SRC := bottom-encode bottom-decode
 
-all: $(SRC)
+all: $(SRC:%.c=%)
 
-bottom-encode:
-	$(CC) $(ACTUAL_CFLAGS) bottom-encode.c -o bottom-encode
-
-bottom-decode:
-	$(CC) $(ACTUAL_CFLAGS) bottom-decode.c -o bottom-decode
+%: %.c
+	$(CC) $(ACTUAL_CFLAGS) $@.c -o $@
 
 install: all
 	mkdir -p $(DESTDIR)$(BINDIR)
-	$(CP) $(SRC) $(DESTDIR)$(BINDIR)
+	$(INSTALL) -Dm755 $(SRC) $(DESTDIR)$(BINDIR)
 
 uninstall:
-	$(RM) $(addprefix $(DESTDIR)$(BINDIR)/, $(SRC))
+	rm -rf $(addprefix $(DESTDIR)$(BINDIR)/, $(SRC))
 
 clean:
-	$(RM) $(SRC)
+	rm -r $(SRC)
 
 .PHONY: all clean install
