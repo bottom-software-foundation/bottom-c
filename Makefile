@@ -1,11 +1,9 @@
-CC      ?= gcc
-INSTALL ?= install
-
 PREFIX  ?= /usr/local
 BINDIR  ?= $(PREFIX)/bin
+INSTALL ?= install
 CFLAGS  ?= -Ofast -flto -pipe
 
-REQ_CFLAGS    = --std=c99 -fPIC -s
+REQ_CFLAGS    = -std=c99 -fPIC
 WARN_CFLAGS   = -Wall -Wextra
 ACTUAL_CFLAGS = $(REQ_CFLAGS) $(WARN_CFLAGS) $(CFLAGS)
 
@@ -14,11 +12,10 @@ SRC := bottom-encode bottom-decode
 all: $(SRC:%.c=%)
 
 %: %.c
-	$(CC) $(ACTUAL_CFLAGS) $@.c -o $@
+	$(CC) $(ACTUAL_CFLAGS) $^ -o $@
 
 install: all
-	mkdir -p $(DESTDIR)$(BINDIR)
-	$(INSTALL) -Dm755 $(SRC) $(DESTDIR)$(BINDIR)
+	$(INSTALL) -Dm755 -t $(DESTDIR)$(BINDIR) $(SRC)
 
 uninstall:
 	rm -rf $(addprefix $(DESTDIR)$(BINDIR)/, $(SRC))
